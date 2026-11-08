@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPU Cloud Comparison: Price, Features, Privacy & Value Matrix</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --surface: #1a2332;
+    --surface2: #243044;
+    --text: #e8eef4;
+    --muted: #8b9bb4;
+    --accent: #3b82f6;
+    --accent-hover: #60a5fa;
+    --green: #22c55e;
+    --yellow: #eab308;
+    --red: #ef4444;
+    --border: #2d3a4f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 1.5rem;
+  }
+  .container { max-width: 1500px; margin: 0 auto; }
+  header { margin-bottom: 2rem; }
+  h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.25rem; margin: 2rem 0 1rem; color: var(--text); }
+  .subtitle { color: var(--muted); font-size: 0.95rem; max-width: 900px; }
+  .meta { color: var(--muted); font-size: 0.8rem; margin-top: 0.75rem; }
+  .controls {
+    display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0;
+    align-items: center;
+  }
+  input[type="search"] {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    min-width: 220px;
+    font-size: 0.9rem;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    background: var(--surface);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+  th, td {
+    padding: 0.7rem 0.55rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    background: var(--surface2);
+    position: sticky;
+    top: 0;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  th:hover { background: #2c3d56; }
+  th.sorted-asc::after { content: " ▲"; color: var(--accent); }
+  th.sorted-desc::after { content: " ▼"; color: var(--accent); }
+  tr:hover td { background: rgba(59, 130, 246, 0.08); }
+  .price { font-weight: 600; color: #93c5fd; white-space: nowrap; }
+  .score { font-weight: 700; font-size: 1.05rem; text-align: center; }
+  .score-high { color: #86efac; }
+  .score-mid { color: #fde047; }
+  .score-low { color: #fca5a5; }
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .badge-green { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+  .badge-yellow { background: rgba(234, 179, 8, 0.2); color: #fde047; }
+  .badge-red { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+  .notes { max-width: 240px; }
+  footer {
+    margin-top: 2rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  footer h2 { font-size: 1rem; color: var(--text); margin: 1.25rem 0 0.5rem; }
+  ul { padding-left: 1.25rem; margin: 0.5rem 0; }
+  li { margin-bottom: 0.35rem; }
+  a { color: var(--accent); }
+  .legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.8rem; margin: 0.75rem 0; }
+  .score-note { font-size: 0.78rem; color: var(--muted); margin: 0.5rem 0 1rem; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>GPU Cloud Comparison Matrix</h1>
+    <p class="subtitle">Price, features, security/privacy, and value scores for RunPod, Modal, Vast.ai, Lambda Labs, and Together AI. Click any column header to sort. Scores are 1–10 (higher is better).</p>
+    <div class="legend">
+      <span class="badge badge-green">Strong privacy posture</span>
+      <span class="badge badge-yellow">Good / standard</span>
+      <span class="badge badge-red">Variable / marketplace risk</span>
+    </div>
+    <p class="meta">Last updated: November 2026 · Always verify current pricing and policies on the provider’s site before relying on this. Prices approximate on-demand (Secure/Community or marketplace floors vary).</p>
+  </header>
+
+  <div class="controls">
+    <input type="search" id="search" placeholder="Filter by provider, feature, or note…">
+  </div>
+
+  <div class="table-wrap">
+    <table id="matrix">
+      <thead>
+        <tr>
+          <th data-sort="text">Provider</th>
+          <th data-sort="number">Privacy/Security Score</th>
+          <th data-sort="number">Value Score</th>
+          <th data-sort="number">H100 Price /hr</th>
+          <th data-sort="text">Pricing Model</th>
+          <th data-sort="text">Trains on Workload?</th>
+          <th data-sort="text">Retention / Deletion</th>
+          <th data-sort="text">Opt-out / Controls</th>
+          <th data-sort="text">Certs & Isolation</th>
+          <th data-sort="text">Best For</th>
+          <th data-sort="text">Privacy Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>RunPod</strong></td>
+          <td class="score score-high" data-value="8.5">8.5</td>
+          <td class="score score-high" data-value="8.5">8.5</td>
+          <td class="price" data-value="3.99">Secure ~$3.99<br>Community ~$2.69+</td>
+          <td>Per-second Pods, Serverless, Clusters. No monthly fee.</td>
+          <td><span class="badge badge-green">No</span><br>Hosts prohibited from inspecting data</td>
+          <td>Ephemeral deleted on terminate. No provider backups. Volumes until you delete.</td>
+          <td>Terminate yourself. GDPR rights. Region choice. Secure vs Community Cloud.</td>
+          <td>SOC 2 Type II, GDPR, HIPAA claims. Container isolation. Secure Cloud = vetted DCs.</td>
+          <td>Steady training, wide GPU selection, cost-sensitive work</td>
+          <td class="notes">Strong “we don’t keep copies” stance. Community Cloud is third-party hosts (contractual ban on access). You control deletion.</td>
+        </tr>
+        <tr>
+          <td><strong>Modal</strong></td>
+          <td class="score score-high" data-value="9.0">9.0</td>
+          <td class="score score-mid" data-value="7.0">7.0</td>
+          <td class="price" data-value="3.95">~$3.95 + CPU/memory</td>
+          <td>Pure serverless per-second. Scale-to-zero. $30 free compute/mo on Starter.</td>
+          <td><span class="badge badge-green">No</span><br>Explicit no-training without written consent</td>
+          <td>Function I/O up to 7 days then deleted. Some endpoints zero retention. Volumes until deleted.</td>
+          <td>Retention controls where available. Region selection. Enterprise options.</td>
+          <td>SOC 2. Strong isolation (gVisor / microVMs). Encryption in transit & at rest.</td>
+          <td>Bursty inference, Python-native developer experience</td>
+          <td class="notes">Clear contractual language. Zero-retention path for certain endpoints. Good balance of DX and privacy controls.</td>
+        </tr>
+        <tr>
+          <td><strong>Vast.ai</strong></td>
+          <td class="score score-mid" data-value="6.0">6.0</td>
+          <td class="score score-high" data-value="9.5">9.5</td>
+          <td class="price" data-value="2.20">~$1.90–2.50+ (marketplace)</td>
+          <td>Marketplace per-second. Secure Cloud tier available.</td>
+          <td><span class="badge badge-yellow">Not stated as used</span><br>Hosts forbidden from reviewing data</td>
+          <td>Instance data destroyed on delete. Personal data while account active (+ legal exceptions).</td>
+          <td>Delete instance yourself. Marketing opt-out. GDPR rights.</td>
+          <td>Secure Cloud: ISO 27001+ partners. Container isolation. Variable host quality.</td>
+          <td>Lowest cost, interruptible / checkpointable jobs</td>
+          <td class="notes">Highest variability. Best when you accept marketplace risk and delete promptly. Strong contractual host restrictions.</td>
+        </tr>
+        <tr>
+          <td><strong>Lambda Labs</strong></td>
+          <td class="score score-high" data-value="8.5">8.5</td>
+          <td class="score score-mid" data-value="7.0">7.0</td>
+          <td class="price" data-value="3.99">PCIe ~$3.29<br>SXM ~$3.99–4.29</td>
+          <td>On-demand VMs & clusters. Free egress.</td>
+          <td><span class="badge badge-green">No (Inference API)</span><br>Cloud VMs: standard processor role</td>
+          <td>Terminate deletes instance data. Private Cloud: secure wipe at contract end.</td>
+          <td>Inference API is zero-retention by design. Employee access requires authorization.</td>
+          <td>SOC 2 Type II, ISO 27001. Single-tenant options in Private Cloud / clusters.</td>
+          <td>Reliable training, simple interface, private clusters</td>
+          <td class="notes">Inference API has strong no-store/no-train language. On-demand VMs more conventional. Private Cloud for isolation.</td>
+        </tr>
+        <tr>
+          <td><strong>Together AI</strong></td>
+          <td class="score score-mid" data-value="7.5">7.5</td>
+          <td class="score score-mid" data-value="7.5">7.5</td>
+          <td class="price" data-value="3.99">On-demand $3.99<br>Preemptible $1.99</td>
+          <td>GPU clusters + inference API. Reserved discounts.</td>
+          <td><span class="badge badge-yellow">Opt-in only (off by default)</span><br>Stores prompts by default for product improvement</td>
+          <td>ZDR available (turn off prompt storage). Files until you delete. Metadata for billing retained.</td>
+          <td>Self-serve ZDR toggle. Training opt-in is separate and off by default.</td>
+          <td>SOC 2, ISO 27001.</td>
+          <td>Clusters + managed inference APIs</td>
+          <td class="notes">Default prompt storage is the main difference — easy to disable via ZDR. Training never happens without explicit opt-in.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="score-note"><strong>Score methodology:</strong> Privacy/Security weighs training policies, retention/deletion controls, isolation, certifications, and marketplace vs managed risk. Value Score emphasizes price/performance on sweet-spot cards (RTX 5090/4090, L40S, 6000-series, A100) plus reliability and billing flexibility. Higher is better (1–10).</p>
+
+  <h2>Recommended Value GPUs — Price & Power Sweet Spots</h2>
+  <p class="subtitle">Approximate lowest-to-typical on-demand rates (Nov 2026). Vast.ai and RunPod Community usually offer the lowest floors; Secure/managed tiers cost more for better reliability. These are the best current value cards for most AI compute workloads.</p>
+
+  <div class="table-wrap">
+    <table id="gpu-table">
+      <thead>
+        <tr>
+          <th data-sort="text">GPU</th>
+          <th data-sort="number">VRAM</th>
+          <th data-sort="number">Typical Low $/hr</th>
+          <th data-sort="text">Why It’s a Sweet Spot</th>
+          <th data-sort="text">Best Use Cases</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>RTX 5090</strong></td>
+          <td data-value="32">32 GB</td>
+          <td class="price" data-value="0.35">~$0.21–0.70</td>
+          <td>Blackwell architecture, FP4 support, strong performance jump over 4090 at competitive cloud prices. Best current consumer value.</td>
+          <td>Inference, fine-tuning up to ~14B, image/video gen, general compute</td>
+        </tr>
+        <tr>
+          <td><strong>RTX 4090</strong></td>
+          <td data-value="24">24 GB</td>
+          <td class="price" data-value="0.34">~$0.14–0.50</td>
+          <td>Mature ecosystem, excellent price/performance, widely available. Still a top value pick when cheaper than 5090.</td>
+          <td>Inference, light fine-tuning, Stable Diffusion, prototyping</td>
+        </tr>
+        <tr>
+          <td><strong>L40S</strong></td>
+          <td data-value="48">48 GB</td>
+          <td class="price" data-value="0.47">~$0.38–1.09</td>
+          <td>48 GB VRAM sweet spot for mid-size models. Strong inference throughput, Ada architecture, often better $/performance than A100 for inference.</td>
+          <td>13B–34B inference, moderate training, multi-model serving</td>
+        </tr>
+        <tr>
+          <td><strong>RTX 6000 Ada</strong></td>
+          <td data-value="48">48 GB</td>
+          <td class="price" data-value="0.54">~$0.47–0.99</td>
+          <td>Professional 48 GB card. Reliable, good memory capacity for larger contexts without jumping to HBM pricing.</td>
+          <td>Fine-tuning, larger models, professional workloads</td>
+        </tr>
+        <tr>
+          <td><strong>RTX PRO 6000 Blackwell</strong></td>
+          <td data-value="96">96 GB</td>
+          <td class="price" data-value="1.06">~$0.80–2.49</td>
+          <td>96 GB GDDR7 — massive memory for single-GPU large models. Excellent when you need VRAM more than pure HBM bandwidth.</td>
+          <td>Large model inference/fine-tuning on one GPU, high VRAM needs</td>
+        </tr>
+        <tr>
+          <td><strong>A100 80GB</strong></td>
+          <td data-value="80">80 GB</td>
+          <td class="price" data-value="0.40">~$0.40–1.79</td>
+          <td>Still the training workhorse. High HBM bandwidth, excellent for multi-GPU training. Community/marketplace prices make it very competitive.</td>
+          <td>Full fine-tuning, distributed training, high-bandwidth workloads</td>
+        </tr>
+        <tr>
+          <td><strong>RTX A6000 / A40</strong></td>
+          <td data-value="48">48 GB</td>
+          <td class="price" data-value="0.33">~$0.33–0.59</td>
+          <td>Older but extremely cheap 48 GB options. Great for cost-sensitive work that fits in 48 GB.</td>
+          <td>Budget inference, older model training, experimentation</td>
+        </tr>
+        <tr>
+          <td><strong>RTX 3090</strong></td>
+          <td data-value="24">24 GB</td>
+          <td class="price" data-value="0.22">~$0.10–0.50</td>
+          <td>Still very capable and often the cheapest 24 GB option. Ideal for learning and lighter workloads.</td>
+          <td>Entry-level AI, inference, education, prototyping</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <h2>Key Privacy Takeaways</h2>
+    <ul>
+      <li><strong>Training on workloads:</strong> None of these providers train on your models/datasets/prompts by default. Modal and Together AI have the clearest written “will not train without consent” language. Together AI’s training is an explicit opt-in (off by default).</li>
+      <li><strong>Account data:</strong> Email, billing, and usage metadata are used for service operation and analytics across all platforms.</li>
+      <li><strong>Deletion:</strong> You are responsible for terminating pods/instances and deleting persistent volumes. Ephemeral storage is generally wiped on terminate (RunPod and Vast.ai emphasize they do not keep backups for privacy reasons).</li>
+      <li><strong>Opt-out:</strong> Workload training is usually off by default (nothing to opt out of). Together AI is the main one where you actively enable Zero Data Retention to stop prompt storage.</li>
+    </ul>
+
+    <h2>Stronger Privacy Options</h2>
+    <ul>
+      <li><strong>Self-hosted / local hardware</strong> — Zero provider access.</li>
+      <li><strong>Confidential computing</strong> — Hardware isolation (NVIDIA Confidential Computing, Intel TDX, AMD SEV) so the operator cannot inspect memory/GPU contents. Available on Azure, Google Cloud, and specialized providers.</li>
+      <li><strong>Private Cloud / single-tenant</strong> — Lambda Private Cloud or reserved clusters with contractual isolation and secure wipe.</li>
+    </ul>
+
+    <p style="margin-top: 1.5rem;">This page is for informational comparison only. Pricing and policies change. Always check the latest terms, DPA, and live pricing on each provider’s website before use.</p>
+  </footer>
+</div>
+
+<script>
+function makeSortable(tableId) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const tbody = table.querySelector('tbody');
+  const headers = table.querySelectorAll('th');
+  let currentSort = { col: null, dir: 1 };
+
+  headers.forEach((th, index) => {
+    th.addEventListener('click', () => {
+      const type = th.dataset.sort;
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+
+      if (currentSort.col === index) {
+        currentSort.dir *= -1;
+      } else {
+        currentSort.col = index;
+        currentSort.dir = 1;
+      }
+
+      headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+      th.classList.add(currentSort.dir === 1 ? 'sorted-asc' : 'sorted-desc');
+
+      rows.sort((a, b) => {
+        let aVal = a.cells[index].textContent.trim();
+        let bVal = b.cells[index].textContent.trim();
+
+        const aData = a.cells[index].dataset.value;
+        const bData = b.cells[index].dataset.value;
+        if (aData !== undefined && bData !== undefined) {
+          aVal = parseFloat(aData);
+          bVal = parseFloat(bData);
+        } else if (type === 'number') {
+          aVal = parseFloat(aVal.replace(/[^0-9.]/g, '')) || 0;
+          bVal = parseFloat(bVal.replace(/[^0-9.]/g, '')) || 0;
+        } else {
+          aVal = aVal.toLowerCase();
+          bVal = bVal.toLowerCase();
+        }
+
+        if (aVal < bVal) return -1 * currentSort.dir;
+        if (aVal > bVal) return 1 * currentSort.dir;
+        return 0;
+      });
+
+      rows.forEach(row => tbody.appendChild(row));
+    });
+  });
+}
+
+makeSortable('matrix');
+makeSortable('gpu-table');
+
+document.getElementById('search').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase();
+  document.querySelectorAll('#matrix tbody tr, #gpu-table tbody tr').forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(q) ? '' : 'none';
+  });
+});
+</script>
+</body>
+</html>
